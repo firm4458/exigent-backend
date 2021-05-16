@@ -5,6 +5,7 @@ import { MongooseModule } from "@nestjs/mongoose"
 import { AppController } from "./app.controller"
 import { AppService } from "./app.service"
 import { SchedulesModule } from "./schedules/schedules.module"
+import { AudiosModule } from "./audios/audios.module"
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { SchedulesModule } from "./schedules/schedules.module"
       inject: [ConfigService],
     }),
     SchedulesModule,
+    AudiosModule,
   ],
   controllers: [AppController],
   providers: [AppService],
