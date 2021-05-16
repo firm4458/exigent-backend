@@ -21,13 +21,14 @@ export class SchedulesService {
   }
 
   async findAll() {
-    const schedules = await this.scheduleModel.find({})
+    const query = this.scheduleModel.find().populate("audio")
+    const schedules = await query.exec()
     const responses = schedules.map((schedule) => new ScheduleResponseObject(schedule))
     return new StandardResponse(HttpStatus.OK, "Ok", responses)
   }
 
   async findOne(id: string) {
-    const schedule = await this.scheduleModel.findById(id)
+    const schedule = await this.scheduleModel.findById(id).populate("audio")
     if (!schedule) throw new NotFoundException()
     return new StandardResponse(HttpStatus.OK, "Ok", new ScheduleResponseObject(schedule))
   }

@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose"
-import { Transform } from "class-transformer"
 import { Document, Types } from "mongoose"
+import { Audio, AudioResponseObject } from "../../audios/entities/audio.entity"
 
 export type ScheduleDocument = Schedule & Document
 
@@ -21,22 +21,18 @@ export class Schedule {
   @Prop([Types.ObjectId])
   receivers: Array<Types.ObjectId>
 
-  /* 
-        waiting for AudiosModule
-        @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Audio' )
-        receivers: Audio;
-    */
-  @Prop({ type: Types.ObjectId })
-  audio: Types.ObjectId
+  @Prop({ type: Types.ObjectId, ref: "Audio" })
+  audio: Audio
 }
 
 export class ScheduleResponseObject extends Schedule {
+  audio: AudioResponseObject
   constructor(schedule: Schedule) {
     super()
     this.name = schedule.name
     this.time = schedule.time
     this.receivers = schedule.receivers
-    this.audio = schedule.audio
+    this.audio = new AudioResponseObject(schedule.audio)
     this.id = schedule.id
   }
 }
