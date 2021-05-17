@@ -7,6 +7,7 @@ import { AppService } from "./app.service"
 import { SchedulesModule } from "./schedules/schedules.module"
 import { AudiosModule } from "./audios/audios.module"
 import { DevicesModule } from "./devices/devices.module"
+import { TasksModule } from "./tasks/tasks.module"
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { DevicesModule } from "./devices/devices.module"
     SchedulesModule,
     AudiosModule,
     DevicesModule,
+    TasksModule,
   ],
   controllers: [AppController],
   providers: [AppService],
