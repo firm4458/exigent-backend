@@ -87,6 +87,6 @@ export class TasksService {
   }
 
   publishTask(task: Task) {
-    this.client.publish("@msg/task/" + task.receiver_id, task.type)
+    this.client.publish("@msg/task/" + task.receiver_id, task.type + " " + task.audio_id)
   }
 }
