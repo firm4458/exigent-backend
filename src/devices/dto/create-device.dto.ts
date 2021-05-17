@@ -1,0 +1,8 @@
+import { IsString } from "class-validator"
+
+export class CreateDeviceDto {
+  @IsString()
+  name: string
+  @IsString()
+  mqtt_client_id: string
+}
