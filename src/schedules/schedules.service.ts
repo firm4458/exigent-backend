@@ -13,22 +13,23 @@ export class SchedulesService {
   public static readonly eventNameSpace = "schedule"
 
   async create(createScheduleDto: CreateScheduleDto) {
-    const schedule = new this.scheduleModel(createScheduleDto)
+    let schedule = new this.scheduleModel(createScheduleDto)
     const evt = ".created"
     await schedule.save()
+    schedule = await schedule.populate("audio").populate("receivers").execPopulate()
     this.eventEmitter.emit(SchedulesService.eventNameSpace + evt, schedule as Schedule)
     return new StandardResponse(HttpStatus.CREATED, "Schedule Created", new ScheduleResponseObject(schedule))
   }
 
   async findAll() {
-    const query = this.scheduleModel.find().populate("audio")
+    const query = this.scheduleModel.find().populate("audio").populate("receivers")
     const schedules = await query.exec()
     const responses = schedules.map((schedule) => new ScheduleResponseObject(schedule))
     return new StandardResponse(HttpStatus.OK, "Ok", responses)
   }
 
   async findOne(id: string) {
-    const schedule = await this.scheduleModel.findById(id).populate("audio")
+    const schedule = await this.scheduleModel.findById(id).populate("audio").populate("receivers")
     if (!schedule) throw new NotFoundException()
     return new StandardResponse(HttpStatus.OK, "Ok", new ScheduleResponseObject(schedule))
   }
