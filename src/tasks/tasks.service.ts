@@ -5,16 +5,17 @@ import { Model } from "mongoose"
 import { Schedule } from "../schedules/entities/schedule.entity"
 import { CreateTaskDto } from "./dto/create-task.dto"
 import { Task, TaskDocument } from "./entities/task.entity"
-import { Cron, Interval } from "@nestjs/schedule"
+import { Cron } from "@nestjs/schedule"
+import { ConfigService } from "@nestjs/config"
 const mqtt = require("mqtt")
 
 @Injectable()
 export class TasksService {
   private readonly client
-  constructor(@InjectModel(Task.name) private readonly taskModel: Model<TaskDocument>) {
+  constructor(@InjectModel(Task.name) private readonly taskModel: Model<TaskDocument>, private readonly configService: ConfigService) {
     this.client = mqtt.connect("mqtt://mqtt.netpie.io", {
-      clientId: "90caf4de-9608-4ae4-b66f-6fb7f92e0bb5",
-      username: "jCe4wHLtegfiswm1MyxiDs4maJsXvZeP",
+      clientId: configService.get("NETPIE_CLIENT_ID"),
+      username: configService.get("NETPIE_USENAME"),
     })
     this.client.subscribe("@msg/task/complete")
     this.client.on("message", (topic, message) => this.handleMessage(topic, message))
