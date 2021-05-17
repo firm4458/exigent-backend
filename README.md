@@ -50,6 +50,15 @@
 | ----------- | ----------- |  
 | `400` | ข้อมูลผิดรูปแบบ response.message จะเป็น array ของ string ที่อธิบายสิ่งที่ผิด |
 
+## /api/tasks/schedule-response/:id
+#### Method: `GET`
+ใช้สำหรับดูการตอบรับของการปลุก
+### Response Data ( ข้อมูลที่อยู่ใน response.data )
+เป็น array โดยที่แต่ละ element มีรูปแบบดังนี้ ( มีโอกาสเป็น array ว่างได้หาก id ของการปลุกไม่ถูกต้อง )
+| field | Type | Description |  
+| ----------- | ----------- | ----------- |  
+| `receiver_id` | `string` | id ผู้รับ |  
+| `finisehd` | `boolean` | สถานะการตอบรับ เป็น `true` ถ้าตอบรับแล้ว |
 ## /api/schedules/:id
 #### Method: `GET`
 ใช้สำหรับดูข้อมูลการปลุกตาม id
