@@ -27,7 +27,7 @@
 | ----------- | ----------- | ----------- |  
 | `id` | `string` | id เครื่อง |  
 | `name` | `string` | ชื่อการเครื่อง |  
-| `mqtt_client_id` | `Date` | ClientId สำหรับเชื่อมต่อ NETPIE |
+| `mqtt_client_id` | `string` | ClientId สำหรับเชื่อมต่อ NETPIE |
 
 ---
 # **Schedule endpoints**
@@ -55,13 +55,6 @@
 ใช้สำหรับดูข้อมูลการปลุกตาม id
 ### Response Data ( ข้อมูลที่อยู่ใน response.data )
 ข้อมูลของการปลุก มีรูปแบบตาม [Schedule](#Schedule)
-| field | Type | Description |  
-| ----------- | ----------- | ----------- |  
-| `id` | `string` | id การตั้งปลุก |  
-| `name` | `string` | ชื่อการตั้งปลุก |  
-| `time` | `Date` | เวลาตั้งปลุก |
-| `receivers` | `Array<Device>` | array ของข้อมูลเครื่องที่จะรับ |
-| `audio` | `Audio` | ข้อมูลของไฟล์เสียงที่ใช้ |
 
 ### Error
  | status code | Description |  
@@ -142,9 +135,7 @@
 | field | Type | Description |  
 | ----------- | ----------- | ----------- |  
 | `name` | `string` | ชื่อเครื่อง |  
-| `mqtt_client_id` | `Date` | ClientId สำหรับเชื่อมต่อ NETPIE |
-| `receivers` | `Array<string>` | array ของ id เครื่องที่จะรับ |
-| `audio` | `string` | id ของไฟล์เสียงที่ใช้ (ได้จากการ upload เสียงด้วย POST api/audios ) |  
+| `mqtt_client_id` | `string` | ClientId สำหรับเชื่อมต่อ NETPIE |
 ### Response Data ( ข้อมูลที่อยู่ใน response.data )
 ข้อมูลของการปลุกที่สร้างขึ้น มีรูปแบบตาม [Device](#Device)
 
@@ -157,7 +148,7 @@
 #### Method: `GET`
 ใช้สำหรับดูข้อมูลเครื่องตาม id
 ### Response Data ( ข้อมูลที่อยู่ใน response.data )
-ข้อมูลของการปลุก มีรูปแบบตาม [Device](#Device)
+ข้อมูลของเครื่อง มีรูปแบบตาม [Device](#Device)
 
 ### Error
  | status code | Description |  
@@ -183,7 +174,7 @@
 **ใน NETPIE อย่าลืมทำให้ device ทั้งหมดอยู่ใน group เดียวกันด้วย**
 ## @msg/task/:mqtt_client_id
 subscribe topic นี้เพื่อรอรับ task ต่างๆ เช่น \
-สสมุติว่าเครื่องหนึ่งมี ClientId ใน NETPIE เป็น 1234 ก็ให้ subscribe ไปที่ topic `@msg/task/1234`
+สมุติว่าเครื่องหนึ่งมี ClientId ใน NETPIE เป็น 1234 ก็ให้ subscribe ไปที่ topic `@msg/task/1234`
 ### message
 ข้อความในรูปแบบ `taskType audio_id` โดย `taskType` มี 2 แบบได้แก่ `Download` และ `Play` หมายถึงให้โหลดไฟล์และเล่นไฟล์เสียงตามลำดับ ยกตัวอย่างเช่น \
 `Download 1234` หมายถึงให้ download ไฟล์เสียงที่มี id เป็น 1234 (ทำได้โดยยิง HTTP request ไปที่ [GET /api/audios/:id/file](#apiaudiosidfile) ) และบันทึกไว้ใน sd card\
