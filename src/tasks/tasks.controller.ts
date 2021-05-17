@@ -1,40 +1,19 @@
-import { Controller } from "@nestjs/common"
-import { MessagePattern, Payload } from "@nestjs/microservices"
+import { Controller, Get, HttpStatus, Param } from "@nestjs/common"
+import { StandardResponse } from "../common/standardResponse"
 import { TasksService } from "./tasks.service"
-import { CreateTaskDto } from "./dto/create-task.dto"
-import { UpdateTaskDto } from "./dto/update-task.dto"
 
-@Controller()
+@Controller("Tasks")
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
-  @MessagePattern("@msg/test")
-  test(@Payload() payload) {
-    console.log(payload)
-  }
-
-  @MessagePattern("createTask")
-  create(@Payload() createTaskDto: CreateTaskDto) {
-    return this.tasksService.create(createTaskDto)
-  }
-
-  @MessagePattern("findAllTasks")
-  findAll() {
+  @Get()
+  async findAll() {
     return this.tasksService.findAll()
   }
 
-  @MessagePattern("findOneTask")
-  findOne(@Payload() id: number) {
-    return this.tasksService.findOne(id)
-  }
-
-  @MessagePattern("updateTask")
-  update(@Payload() updateTaskDto: UpdateTaskDto) {
-    return this.tasksService.update(updateTaskDto.id, updateTaskDto)
-  }
-
-  @MessagePattern("removeTask")
-  remove(@Payload() id: number) {
-    return this.tasksService.remove(id)
+  @Get("schedule-response/:id")
+  async getScheduleResponse(@Param("id") id: string) {
+    const responses = await this.tasksService.getScheduleResponse(id)
+    return new StandardResponse(HttpStatus.OK, "Ok", responses)
   }
 }

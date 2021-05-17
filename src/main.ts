@@ -8,7 +8,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ transform: true }))
   app.setGlobalPrefix("api")
 
-  const microservice = app.connectMicroservice({
+  /*const microservice = app.connectMicroservice({
     transport: Transport.MQTT,
     options: {
       url: "mqtt://mqtt.netpie.io",
@@ -16,9 +16,9 @@ async function bootstrap() {
       username: "jCe4wHLtegfiswm1MyxiDs4maJsXvZeP",
       password: "GiocwK-w-gQ0o(gCpH0brab8Rk#vnv#J",
     },
-  })
+  })*/
 
-  await app.startAllMicroservicesAsync()
+  //await app.startAllMicroservicesAsync()
   await app.listen(3000)
 }
 bootstrap()
