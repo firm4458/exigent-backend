@@ -5,6 +5,7 @@ import { Model } from "mongoose"
 import { Schedule } from "../schedules/entities/schedule.entity"
 import { CreateTaskDto } from "./dto/create-task.dto"
 import { Task, TaskDocument } from "./entities/task.entity"
+import { Cron, Interval } from "@nestjs/schedule"
 const mqtt = require("mqtt")
 
 @Injectable()
@@ -60,6 +61,7 @@ export class TasksService {
         receiver_id: receiver.mqtt_client_id,
         time: payload.time,
         finished: false,
+        published: true,
       })
       this.publishTask(downloadTask)
       await this.create({
@@ -69,7 +71,18 @@ export class TasksService {
         receiver_id: receiver.mqtt_client_id,
         time: payload.time,
         finished: false,
+        published: false,
       })
+    }
+  }
+
+  @Cron("0 * * * * *")
+  async handleCron() {
+    const tasks = await this.taskModel.find({ time: { $lte: new Date() }, published: false })
+    for (const task of tasks) {
+      this.publishTask(task)
+      task.published = true
+      await task.save()
     }
   }
 

@@ -8,4 +8,5 @@ export class CreateTaskDto {
   audio_id: string
   time: Date
   finished: boolean
+  published: boolean
 }

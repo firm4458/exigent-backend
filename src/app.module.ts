@@ -8,10 +8,12 @@ import { SchedulesModule } from "./schedules/schedules.module"
 import { AudiosModule } from "./audios/audios.module"
 import { DevicesModule } from "./devices/devices.module"
 import { TasksModule } from "./tasks/tasks.module"
+import { ScheduleModule as CronModule } from "@nestjs/schedule"
 
 @Module({
   imports: [
     EventEmitterModule.forRoot({ wildcard: true, delimiter: "." }),
+    CronModule.forRoot(),
     ConfigModule.forRoot({ envFilePath: [".env", ".env.development"] }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],

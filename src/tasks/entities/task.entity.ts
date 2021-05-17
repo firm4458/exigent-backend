@@ -21,6 +21,8 @@ export class Task {
   time: Date
   @Prop()
   finished: boolean
+  @Prop()
+  published: boolean
 }
 
 export const TaskSchema = SchemaFactory.createForClass(Task)
