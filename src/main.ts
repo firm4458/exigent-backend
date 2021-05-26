@@ -1,6 +1,6 @@
 import { ValidationPipe } from "@nestjs/common"
 import { NestFactory } from "@nestjs/core"
-import { Transport } from "@nestjs/microservices"
+import { useContainer } from "class-validator"
 import { AppModule } from "./app.module"
 
 async function bootstrap() {
@@ -13,18 +13,7 @@ async function bootstrap() {
     preflightContinue: false,
     optionsSuccessStatus: 204,
   })
-
-  /*const microservice = app.connectMicroservice({
-    transport: Transport.MQTT,
-    options: {
-      url: "mqtt://mqtt.netpie.io",
-      clientId: "90caf4de-9608-4ae4-b66f-6fb7f92e0bb5",
-      username: "jCe4wHLtegfiswm1MyxiDs4maJsXvZeP",
-      password: "GiocwK-w-gQ0o(gCpH0brab8Rk#vnv#J",
-    },
-  })*/
-
-  //await app.startAllMicroservicesAsync()
+  useContainer(app.select(AppModule), { fallbackOnErrors: true })
   await app.listen(3000)
 }
 bootstrap()

@@ -1,0 +1,9 @@
+version: "2"
+services:
+  exigent-backend:
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+    command: "npm run start:debug"
+    volumes:
+      - .:/usr/src/app

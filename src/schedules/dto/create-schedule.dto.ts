@@ -1,6 +1,6 @@
 import { Type } from "class-transformer"
-import { IsArray, IsDate, IsMongoId, IsString, ValidateNested } from "class-validator"
-import { Types } from "mongoose"
+import { IsArray, IsDate, IsMongoId, IsString, Validate } from "class-validator"
+import { ValidateRef } from "../../common/validateRef"
 
 export class CreateScheduleDto {
   @IsString()
@@ -16,6 +16,7 @@ export class CreateScheduleDto {
         receivers: Array<Device>;
     */
   @IsArray()
+  @Validate(ValidateRef, ["Device"], { each: true })
   @IsMongoId({ each: true })
   receivers: Array<string>
 
@@ -24,6 +25,7 @@ export class CreateScheduleDto {
         @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Audio' )
         receivers: Audio;
     */
+  @Validate(ValidateRef, ["Audio"])
   @IsMongoId()
   audio: string
 }

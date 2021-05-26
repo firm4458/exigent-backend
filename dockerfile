@@ -6,4 +6,4 @@ WORKDIR /usr/src/app
 COPY . .
 RUN npm install
 RUN npm i -g @nestjs/cli
-ENTRYPOINT [ "nest","start" ]
+RUN npm run build

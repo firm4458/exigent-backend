@@ -9,6 +9,7 @@ import { AudiosModule } from "./audios/audios.module"
 import { DevicesModule } from "./devices/devices.module"
 import { TasksModule } from "./tasks/tasks.module"
 import { ScheduleModule as CronModule } from "@nestjs/schedule"
+import { ValidateRef } from "./common/validateRef"
 
 @Module({
   imports: [
@@ -29,6 +30,6 @@ import { ScheduleModule as CronModule } from "@nestjs/schedule"
     TasksModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ValidateRef],
 })
 export class AppModule {}

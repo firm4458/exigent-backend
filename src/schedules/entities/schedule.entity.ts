@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose"
+import { Validate } from "class-validator"
 import { Document, Types } from "mongoose"
 import { Audio, AudioResponseObject } from "../../audios/entities/audio.entity"
+import { ValidateRef } from "../../common/validateRef"
 import { Device, DeviceResponseObject } from "../../devices/entities/device.entity"
 
 export type ScheduleDocument = Schedule & Document
@@ -29,7 +31,7 @@ export class ScheduleResponseObject extends Schedule {
     this.name = schedule.name
     this.time = schedule.time
     this.receivers = schedule.receivers.map((device) => new DeviceResponseObject(device))
-    this.audio = new AudioResponseObject(schedule.audio)
+    if (this.audio) this.audio = new AudioResponseObject(schedule.audio)
     this.id = schedule.id
   }
 }
