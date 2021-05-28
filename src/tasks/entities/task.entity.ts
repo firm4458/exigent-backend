@@ -16,6 +16,8 @@ export class Task {
   @Prop()
   receiver_id: Types.ObjectId
   @Prop()
+  client_id: string
+  @Prop()
   audio_id: Types.ObjectId
   @Prop()
   time: Date

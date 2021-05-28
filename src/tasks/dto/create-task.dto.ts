@@ -10,4 +10,5 @@ export class CreateTaskDto {
   finished: boolean
   published: boolean
   received: boolean
+  client_id: string
 }

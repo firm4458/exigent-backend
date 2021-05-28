@@ -75,7 +75,8 @@ export class TasksService {
         type: "Download",
         schedule_id: payload.id,
         audio_id: payload.audio.id,
-        receiver_id: receiver.mqtt_client_id,
+        receiver_id: receiver.id,
+        client_id: receiver.mqtt_client_id,
         time: payload.time,
         finished: false,
         published: true,
@@ -86,7 +87,8 @@ export class TasksService {
         type: "Play",
         schedule_id: payload.id,
         audio_id: payload.audio.id,
-        receiver_id: receiver.mqtt_client_id,
+        receiver_id: receiver.id,
+        client_id: receiver.mqtt_client_id,
         time: payload.time,
         finished: false,
         published: false,
@@ -106,6 +108,6 @@ export class TasksService {
   }
 
   publishTask(task: Task) {
-    this.client.publish("@msg/task/" + task.receiver_id, task.type + " " + task.audio_id)
+    this.client.publish("@msg/task/" + task.client_id, task.type + " " + task.audio_id)
   }
 }
