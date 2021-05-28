@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common"
-import { OnEvent } from "@nestjs/event-emitter"
+import { EventEmitter2, OnEvent } from "@nestjs/event-emitter"
 import { InjectModel } from "@nestjs/mongoose"
 import { Model } from "mongoose"
 import { Schedule } from "../schedules/entities/schedule.entity"
@@ -12,12 +12,18 @@ const mqtt = require("mqtt")
 @Injectable()
 export class TasksService {
   private readonly client
-  constructor(@InjectModel(Task.name) private readonly taskModel: Model<TaskDocument>, private readonly configService: ConfigService) {
+  constructor(
+    @InjectModel(Task.name) private readonly taskModel: Model<TaskDocument>,
+    private readonly configService: ConfigService,
+    private eventEmitter: EventEmitter2
+  ) {
     this.client = mqtt.connect("mqtt://mqtt.netpie.io", {
       clientId: configService.get("NETPIE_CLIENT_ID"),
       username: configService.get("NETPIE_USENAME"),
     })
     this.client.subscribe("@msg/task/complete")
+    this.client.subscribe("@msg/task/received")
+    this.client.subscribe("@msg/online")
     this.client.on("message", (topic, message) => this.handleMessage(topic, message))
   }
 
@@ -42,7 +48,17 @@ export class TasksService {
     console.log(topic, message.toString())
     if (topic == "@msg/task/complete") {
       this.completeTask(message.toString())
+    } else if (topic == "@msg/task/received") {
+      this.markTaskReceived(message.toString())
+    } else if (topic == "@msg/online") {
+      this.eventEmitter.emit("device.online", message.toString())
     }
+  }
+  async markTaskReceived(id: string) {
+    const task = await this.taskModel.findById(id)
+    if (!task) return
+    task.received = true
+    await task.save()
   }
 
   async completeTask(id: string) {
@@ -63,6 +79,7 @@ export class TasksService {
         time: payload.time,
         finished: false,
         published: true,
+        received: false,
       })
       this.publishTask(downloadTask)
       await this.create({
@@ -73,6 +90,7 @@ export class TasksService {
         time: payload.time,
         finished: false,
         published: false,
+        received: false,
       })
     }
   }

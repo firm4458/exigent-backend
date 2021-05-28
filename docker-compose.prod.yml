@@ -2,5 +2,8 @@ version: "2"
 services:
   exigent-backend:
     ports:
-        - "80:3000"
-    command: "npm run start:prod"
+      - "80:3000"
+    command: "npm run build && npm run start:prod"
+    environment: 
+      - NETPIE_CLIENT_ID=90caf4de-9608-4ae4-b66f-6fb7f92e0bb5
+      - NETPIE_USENAME=jCe4wHLtegfiswm1MyxiDs4maJsXvZeP

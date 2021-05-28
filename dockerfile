@@ -6,4 +6,3 @@ WORKDIR /usr/src/app
 COPY . .
 RUN npm install
 RUN npm i -g @nestjs/cli
-RUN npm run build

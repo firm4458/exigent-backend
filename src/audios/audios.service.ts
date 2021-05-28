@@ -16,7 +16,7 @@ export class AudiosService {
   async create(file: Express.Multer.File, createAudioDto: CreateAudioDto) {
     const wav = new WaveFile(file.buffer)
     wav.toBitDepth("8")
-    wav.toSampleRate(16000)
+    wav.toSampleRate(16000, { method: "sinc" })
     const audio = new this.audioModel(createAudioDto)
     const fullPath = path.join(this.configService.get("UPLOAD_DEST"), audio.id + ".wav")
     fs.writeFileSync(fullPath, wav.toBuffer())

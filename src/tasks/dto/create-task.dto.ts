@@ -9,4 +9,5 @@ export class CreateTaskDto {
   time: Date
   finished: boolean
   published: boolean
+  received: boolean
 }

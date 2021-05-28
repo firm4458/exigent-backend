@@ -23,6 +23,8 @@ export class Task {
   finished: boolean
   @Prop()
   published: boolean
+  @Prop()
+  received: boolean
 }
 
 export const TaskSchema = SchemaFactory.createForClass(Task)
