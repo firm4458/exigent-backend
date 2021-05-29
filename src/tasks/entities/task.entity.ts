@@ -9,6 +9,7 @@ export type TaskDocument = Task & Document
 
 @Schema()
 export class Task {
+  id: string
   @Prop({ type: String, enum: ["Download", "Play"] })
   type: TaskType
   @Prop()
